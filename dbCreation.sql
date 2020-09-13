@@ -29,7 +29,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`workshop` (
   `ID` INT NOT NULL AUTO_INCREMENT,
-  `type` INT NOT NULL,
+  `kind` INT NOT NULL,
   `status` INT NOT NULL,
   `date` INT NOT NULL,
   `teaser` VARCHAR(1023) NULL,
