@@ -13,7 +13,7 @@ const (
 )
 
 //Workshop as in the db
-type Workshop struct {
+type WorkshopDB struct {
 	ID            int
 	Kind          int
 	Status        int
@@ -23,8 +23,8 @@ type Workshop struct {
 	LocationOnMap string
 }
 
-// WorkshopDTO a workshop DTO
-type WorkshopDTO struct {
+// Workshop a workshop with all (linked) data and json mapping
+type Workshop struct {
 	ID            int      `json:"id"`
 	Kind          int      `json:"type"`
 	Status        int      `json:"status"`
@@ -35,18 +35,31 @@ type WorkshopDTO struct {
 	Likes         int      `json:"upvotes"`
 	Tags          []string `json:"tags"`
 	Authors       []string `json:"authors"`
-	Content       []string `json:"content"`
+	ContentIDs    []string `json:"content"`
 }
 
-// toDTO() creates a WorkshopDTO from a Workshop
-func (workshop Workshop) toDTO() WorkshopDTO {
-	var dto WorkshopDTO
-	dto.ID = workshop.ID
-	dto.Kind = workshop.Kind
-	dto.Status = workshop.Status
-	dto.Date = workshop.Date
-	dto.Teaser = workshop.Teaser
-	dto.LocationName = workshop.LocationName
-	dto.LocationOnMap = workshop.LocationName
-	return dto
+// toDTO() creates a WorkshopDB from a Workshop only maps common fields
+func (workshop Workshop) ToDB() WorkshopDB {
+	var db WorkshopDB
+	db.ID = workshop.ID
+	db.Kind = workshop.Kind
+	db.Status = workshop.Status
+	db.Date = workshop.Date
+	db.Teaser = workshop.Teaser
+	db.LocationName = workshop.LocationName
+	db.LocationOnMap = workshop.LocationName
+	return db
+}
+
+// fromDB returns a Workshop from a WorkshopDB, only maps common fields
+func (db WorkshopDB) FromDB() Workshop {
+	var workshop Workshop
+	workshop.ID = db.ID
+	workshop.Kind = db.Kind
+	workshop.Status = db.Status
+	workshop.Date = db.Date
+	workshop.Teaser = db.Teaser
+	workshop.LocationName = db.LocationName
+	workshop.LocationName = db.LocationOnMap
+	return workshop
 }
