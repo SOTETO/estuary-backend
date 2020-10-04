@@ -1,6 +1,7 @@
 package services
 
 import (
+	guuid "github.com/google/uuid"
 	"github.com/tombiers/estuary-backend/daos"
 	"github.com/tombiers/estuary-backend/models"
 )
@@ -32,11 +33,13 @@ func GetWorkshopByUUID(uuid string) models.Workshop {
 }
 
 // CreateWorkshop create a new workshop
-func CreateWorkshop(workshop models.Workshop) {
-	daos.CreateWorkshop(workshop.ToDB())
+func CreateWorkshop(workshop models.Workshop) models.Workshop {
+	workshop.UUID = guuid.New().String()
+	var workshopDB = daos.CreateWorkshop(workshop.ToDB())
 	// TODO: create linked data:
 	// tags
 	// authors
+	return workshopDB.FromDB()
 }
 
 // UpdateWorkshop update the workshop with the given id to the given data

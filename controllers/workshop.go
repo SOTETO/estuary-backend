@@ -20,7 +20,8 @@ func CreateNewWorkshop(w http.ResponseWriter, r *http.Request) {
 
 	var workshop models.Workshop
 	json.Unmarshal(reqBody, &workshop)
-	services.CreateWorkshop(workshop)
+	var newWorkshop = services.CreateWorkshop(workshop)
+	json.NewEncoder(w).Encode(newWorkshop)
 }
 
 // AllWorkshops returns all known workshops

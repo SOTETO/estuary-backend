@@ -19,8 +19,9 @@ func GetWorkshopByUUID(uuid string) models.WorkshopDB {
 }
 
 // CreateWorkshop creates a new workshop
-func CreateWorkshop(workshop models.WorkshopDB) {
+func CreateWorkshop(workshop models.WorkshopDB) models.WorkshopDB {
 	db.Create(&workshop)
+	return workshop
 }
 
 // UpdateWorkshop updates the workshop with the given id to the given data and return the updated workshop
