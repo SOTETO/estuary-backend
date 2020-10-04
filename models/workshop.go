@@ -1,33 +1,27 @@
 package models
 
-const (
-	TypeUNKOWN = 0
-	TypePS     = 1
-	TypeIDEA   = 2
-)
+// Tabler interface to set the associated db table name for a struct
+type Tabler interface {
+	TableName() string
+}
 
-const (
-	StatusWIP    = 0
-	StatusPUBLIC = 1
-	StatusUNKOWN = 2
-)
+// TableName overrides the table name used by WorkshopDB to `workshop`
+func (WorkshopDB) TableName() string {
+	return "workshop"
+}
 
-//Workshop as in the db
+//WorkshopDB model for a record i´n the db
 type WorkshopDB struct {
-	ID            int
-	Kind          int
-	Status        int
-	Date          int
-	Teaser        string
-	LocationName  string
-	LocationOnMap string
+	UUID          string `gorm:"column:UUID"`
+	Date          int    `gorm:"column:date"`
+	Teaser        string `gorm:"column:teaser"`
+	LocationName  string `gorm:"column:locationName"`
+	LocationOnMap string `gorm:"column:locationOnMap"`
 }
 
 // Workshop a workshop with all (linked) data and json mapping
 type Workshop struct {
-	ID            int      `json:"id"`
-	Kind          int      `json:"type"`
-	Status        int      `json:"status"`
+	UUID          string   `json:"UUID"`
 	Date          int      `json:"date"`
 	Teaser        string   `json:"teaser"`
 	LocationName  string   `json:"LocationName"`
@@ -35,15 +29,13 @@ type Workshop struct {
 	Likes         int      `json:"upvotes"`
 	Tags          []string `json:"tags"`
 	Authors       []string `json:"authors"`
-	ContentIDs    []string `json:"content"`
+	ContentUUIDs  []string `json:"content"`
 }
 
-// toDTO() creates a WorkshopDB from a Workshop only maps common fields
+// ToDB creates a WorkshopDB from a Workshop only maps common fields
 func (workshop Workshop) ToDB() WorkshopDB {
 	var db WorkshopDB
-	db.ID = workshop.ID
-	db.Kind = workshop.Kind
-	db.Status = workshop.Status
+	db.UUID = workshop.UUID
 	db.Date = workshop.Date
 	db.Teaser = workshop.Teaser
 	db.LocationName = workshop.LocationName
@@ -51,12 +43,10 @@ func (workshop Workshop) ToDB() WorkshopDB {
 	return db
 }
 
-// fromDB returns a Workshop from a WorkshopDB, only maps common fields
+// FromDB returns a Workshop from a WorkshopDB, only maps common fields
 func (db WorkshopDB) FromDB() Workshop {
 	var workshop Workshop
-	workshop.ID = db.ID
-	workshop.Kind = db.Kind
-	workshop.Status = db.Status
+	workshop.UUID = db.UUID
 	workshop.Date = db.Date
 	workshop.Teaser = db.Teaser
 	workshop.LocationName = db.LocationName
