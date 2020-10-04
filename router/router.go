@@ -31,7 +31,7 @@ func HandleRequests() {
 	myRouter.HandleFunc("/all-workshops", controllers.AllWorkshops).Methods("GET")
 	myRouter.HandleFunc("/workshop/{uuid}", controllers.SingleWorkshop).Methods("GET")
 	myRouter.HandleFunc("/update-workshop/{uuid}", controllers.UpdateWorkshop).Methods("PUT")
-	myRouter.HandleFunc("/workshop/{uuid}", controllers.DeleteWorkshop).Methods("DELETE")
+	myRouter.HandleFunc("/delete-workshop/{uuid}", controllers.DeleteWorkshop).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":10000", myRouter))
 }

@@ -13,9 +13,9 @@ func GetAllWorkshops() []models.WorkshopDB {
 
 // GetWorkshopByUUID returns workshop with the given id
 func GetWorkshopByUUID(uuid string) models.WorkshopDB {
-	var workshop models.WorkshopDB
-	db.First(&workshop, uuid)
-	return workshop
+	var dbWorkshop models.WorkshopDB
+	db.Where("UUID = ?", uuid).First(&dbWorkshop)
+	return dbWorkshop
 }
 
 // CreateWorkshop creates a new workshop
@@ -32,7 +32,6 @@ func UpdateWorkshop(uuid string, workshop models.WorkshopDB) models.WorkshopDB {
 
 // DeleteWorkshop delete the workshop with the given id
 func DeleteWorkshop(uuid string) {
-	var workshop models.WorkshopDB
-	db.First(&workshop, uuid)
-	db.Delete(&workshop)
+	var dbWorkshop models.WorkshopDB
+	db.Where("UUID = ?", uuid).First(&dbWorkshop).Delete(&dbWorkshop)
 }
