@@ -12,7 +12,7 @@ func (WorkshopDB) TableName() string {
 
 //WorkshopDB model for a record i´n the db
 type WorkshopDB struct {
-	UUID          string `gorm:"column:UUID"`
+	UUID          string `gorm:"column:UUID; primaryKey"`
 	Date          int    `gorm:"column:date"`
 	Teaser        string `gorm:"column:teaser"`
 	LocationName  string `gorm:"column:locationName"`
@@ -39,7 +39,7 @@ func (workshop Workshop) ToDB() WorkshopDB {
 	db.Date = workshop.Date
 	db.Teaser = workshop.Teaser
 	db.LocationName = workshop.LocationName
-	db.LocationOnMap = workshop.LocationName
+	db.LocationOnMap = workshop.LocationOnMap
 	return db
 }
 
@@ -50,6 +50,6 @@ func (db WorkshopDB) FromDB() Workshop {
 	workshop.Date = db.Date
 	workshop.Teaser = db.Teaser
 	workshop.LocationName = db.LocationName
-	workshop.LocationName = db.LocationOnMap
+	workshop.LocationOnMap = db.LocationOnMap
 	return workshop
 }

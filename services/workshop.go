@@ -1,8 +1,6 @@
 package services
 
 import (
-	"fmt"
-
 	"github.com/tombiers/estuary-backend/daos"
 	"github.com/tombiers/estuary-backend/models"
 )
@@ -35,7 +33,6 @@ func GetWorkshopByUUID(uuid string) models.Workshop {
 
 // CreateWorkshop create a new workshop
 func CreateWorkshop(workshop models.Workshop) {
-	fmt.Println("Service reporting, making a new Workshop with UUID: ", workshop.UUID, " date: ", workshop.Date, " teaser: ", workshop.Teaser, " authors: ", workshop.Authors)
 	daos.CreateWorkshop(workshop.ToDB())
 	// TODO: create linked data:
 	// tags
