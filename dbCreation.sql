@@ -51,18 +51,18 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`workshopTags` (
   `UUID` VARCHAR(36) NOT NULL COMMENT 'UUID',
-  `workshop_ID` INT NOT NULL,
-  `tags_ID` INT NOT NULL,
-  INDEX `fk_workshopTags_workshop_idx` (`workshop_ID` ASC) VISIBLE,
-  INDEX `fk_workshopTags_tags1_idx` (`tags_ID` ASC) VISIBLE,
+  `workshop_UUID` VARCHAR(36) NOT NULL,
+  `tags_UUID` VARCHAR(36) NOT NULL,
+  INDEX `fk_workshopTags_workshop_idx` (`workshop_UUID` ASC) VISIBLE,
+  INDEX `fk_workshopTags_tags1_idx` (`tags_UUID` ASC) VISIBLE,
   PRIMARY KEY (`UUID`),
   CONSTRAINT `fk_workshopTags_workshop`
-    FOREIGN KEY (`workshop_ID`)
+    FOREIGN KEY (`workshop_UUID`)
     REFERENCES `estuary`.`workshop` (`UUID`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_workshopTags_tags1`
-    FOREIGN KEY (`tags_ID`)
+    FOREIGN KEY (`tags_UUID`)
     REFERENCES `estuary`.`tag` (`UUID`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
@@ -70,20 +70,16 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `estuary`.`ProblemStatement`
+-- Table `estuary`.`Content`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `estuary`.`ProblemStatement` (
-  `UUID` VARCHAR(36) NOT NULL COMMENT 'UUID',
-  `iAM` TEXT NULL,
-  `iWant` TEXT NULL,
-  `but` TEXT NULL,
-  `because` TEXT NULL,
-  `feel` TEXT NULL,
-  `workshop_ID` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `estuary`.`Content` (
+  `UUID` VARCHAR(36) NOT NULL,
+  `title` VARCHAR(255) NULL,
+  `workshop_UUID` VARCHAR(36) NOT NULL,
   PRIMARY KEY (`UUID`),
-  INDEX `fk_ProblemStatement_workshop1_idx` (`workshop_ID` ASC) VISIBLE,
-  CONSTRAINT `fk_ProblemStatement_workshop1`
-    FOREIGN KEY (`workshop_ID`)
+  INDEX `fk_Content_workshop1_idx` (`workshop_UUID` ASC) VISIBLE,
+  CONSTRAINT `fk_Content_workshop1`
+    FOREIGN KEY (`workshop_UUID`)
     REFERENCES `estuary`.`workshop` (`UUID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -95,19 +91,19 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`likes` (
   `UUID` VARCHAR(36) NOT NULL COMMENT 'UUID',
-  `user_UUID` VARCHAR(255) NOT NULL,
-  `ProblemStatement_ID` INT NOT NULL,
+  `user_UUID` VARCHAR(36) NOT NULL,
+  `Conent_ID` VARCHAR(36) NOT NULL,
   INDEX `fk_likes_user1_idx` (`user_UUID` ASC) VISIBLE,
   PRIMARY KEY (`UUID`),
-  INDEX `fk_likes_ProblemStatement1_idx` (`ProblemStatement_ID` ASC) VISIBLE,
+  INDEX `fk_likes_ProblemStatement1_idx` (`Conent_ID` ASC) VISIBLE,
   CONSTRAINT `fk_likes_user1`
     FOREIGN KEY (`user_UUID`)
     REFERENCES `estuary`.`user` (`UUID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_likes_ProblemStatement1`
-    FOREIGN KEY (`ProblemStatement_ID`)
-    REFERENCES `estuary`.`ProblemStatement` (`UUID`)
+    FOREIGN KEY (`Conent_ID`)
+    REFERENCES `estuary`.`Content` (`UUID`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -118,14 +114,14 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`authors` (
   `UUID` VARCHAR(36) NOT NULL COMMENT 'UUID',
-  `workshop_ID` INT NOT NULL,
-  `user_UUID` VARCHAR(255) NOT NULL,
+  `workshop_UUID` VARCHAR(36) NOT NULL,
+  `user_UUID` VARCHAR(36) NOT NULL,
   `visible` TINYINT NOT NULL,
-  INDEX `fk_authors_workshop1_idx` (`workshop_ID` ASC) VISIBLE,
+  INDEX `fk_authors_workshop1_idx` (`workshop_UUID` ASC) VISIBLE,
   INDEX `fk_authors_user1_idx` (`user_UUID` ASC) VISIBLE,
   PRIMARY KEY (`UUID`),
   CONSTRAINT `fk_authors_workshop1`
-    FOREIGN KEY (`workshop_ID`)
+    FOREIGN KEY (`workshop_UUID`)
     REFERENCES `estuary`.`workshop` (`UUID`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
@@ -148,30 +144,50 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `estuary`.`ProblemStatementLink`
+-- Table `estuary`.`ContenttLink`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `estuary`.`ProblemStatementLink` (
+CREATE TABLE IF NOT EXISTS `estuary`.`ContenttLink` (
   `UUID` VARCHAR(36) NOT NULL COMMENT 'UUID',
-  `linkTag_ID` INT NOT NULL,
-  `ProblemStatement1_ID` INT NOT NULL,
-  `ProblemStatement2_ID` INT NOT NULL,
+  `linkTag_UUID` VARCHAR(36) NOT NULL,
+  `Content1_UUID` VARCHAR(36) NOT NULL,
+  `Content2_UUID` VARCHAR(36) NOT NULL,
   PRIMARY KEY (`UUID`),
-  INDEX `fk_ProblemStatementLink_ProblemStatement1_idx` (`ProblemStatement1_ID` ASC) VISIBLE,
-  INDEX `fk_ProblemStatementLink_ProblemStatement2_idx` (`ProblemStatement2_ID` ASC) VISIBLE,
-  INDEX `fk_ProblemStatementLink_linkTag1_idx` (`linkTag_ID` ASC) VISIBLE,
-  CONSTRAINT `fk_ProblemStatementLink_ProblemStatement1`
-    FOREIGN KEY (`ProblemStatement1_ID`)
-    REFERENCES `estuary`.`ProblemStatement` (`UUID`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ProblemStatementLink_ProblemStatement2`
-    FOREIGN KEY (`ProblemStatement2_ID`)
-    REFERENCES `estuary`.`ProblemStatement` (`UUID`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
+  INDEX `fk_ProblemStatementLink_linkTag1_idx` (`linkTag_UUID` ASC) VISIBLE,
+  INDEX `fk_ContenttLink_Content1_idx` (`Content1_UUID` ASC) VISIBLE,
+  INDEX `fk_ContenttLink_Content2_idx` (`Content2_UUID` ASC) VISIBLE,
   CONSTRAINT `fk_ProblemStatementLink_linkTag1`
-    FOREIGN KEY (`linkTag_ID`)
+    FOREIGN KEY (`linkTag_UUID`)
     REFERENCES `estuary`.`linkTag` (`UUID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ContenttLink_Content1`
+    FOREIGN KEY (`Content1_UUID`)
+    REFERENCES `estuary`.`Content` (`UUID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ContenttLink_Content2`
+    FOREIGN KEY (`Content2_UUID`)
+    REFERENCES `estuary`.`Content` (`UUID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `estuary`.`ProblemStatement`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `estuary`.`ProblemStatement` (
+  `Content_UUID` VARCHAR(36) NOT NULL,
+  `iAM` TEXT NULL,
+  `iWant` TEXT NULL,
+  `but` TEXT NULL,
+  `because` TEXT NULL,
+  `feel` TEXT NULL,
+  INDEX `fk_ProblemStatement_Content1_idx` (`Content_UUID` ASC) VISIBLE,
+  PRIMARY KEY (`Content_UUID`),
+  CONSTRAINT `fk_ProblemStatement_Content1`
+    FOREIGN KEY (`Content_UUID`)
+    REFERENCES `estuary`.`Content` (`UUID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

@@ -10,7 +10,7 @@ var db *gorm.DB
 var err error
 
 func init() {
-	db, err = gorm.Open("mysql", "root:root@tcp(127.0.0.1:3306)/Estuary?charset=utf8&parseTime=True")
+	db, err = gorm.Open("mysql", "root:kpYWcFnRSeErkYsC1kYb@tcp(127.0.0.1:3306)/Estuary?charset=utf8&parseTime=True")
 	fmt.Println("booking controller init")
 
 	if err != nil {
