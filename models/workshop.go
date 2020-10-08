@@ -10,7 +10,7 @@ func (WorkshopDB) TableName() string {
 	return "workshop"
 }
 
-//WorkshopDB model for a record i´n the db
+//WorkshopDB model for a record in the db
 type WorkshopDB struct {
 	UUID          string `gorm:"column:UUID; primaryKey"`
 	Date          int    `gorm:"column:date"`
@@ -28,7 +28,7 @@ type Workshop struct {
 	LocationOnMap string   `json:"LocationOnMap"`
 	Likes         int      `json:"upvotes"`
 	Tags          []string `json:"tags"`
-	Authors       []string `json:"authors"`
+	Authors       []Author `json:"authors"`
 	ContentUUIDs  []string `json:"content"`
 }
 
@@ -52,4 +52,17 @@ func (db WorkshopDB) FromDB() Workshop {
 	workshop.LocationName = db.LocationName
 	workshop.LocationOnMap = db.LocationOnMap
 	return workshop
+}
+
+// ToAuthorDB returns AuthorDB objects for this workshop
+func (workshop Workshop) ToAuthorDB() []AuthorDB {
+	var authors []AuthorDB
+	for _, value := range workshop.Authors {
+		var db AuthorDB
+		db.UserUUID = value.UserUUID
+		db.Visible = value.Visible
+		db.WorkshopUUID = workshop.UUID
+		authors = append(authors, db)
+	}
+	return authors
 }
