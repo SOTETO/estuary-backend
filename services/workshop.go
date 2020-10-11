@@ -8,12 +8,9 @@ import (
 
 //GetAllWorkshops return all workshops
 func GetAllWorkshops() []models.Workshop {
-	var workshopsDB = daos.GetAllWorkshops()
-	var workshops []models.Workshop
-	for _, workshopDB := range workshopsDB {
-		var workshop = workshopDB.FromDB()
-		workshop.ContentUUIDs = FetchContentUUIDs(workshop)
-		workshops = append(workshops, workshop)
+	var workshops = daos.GetAllWorkshops()
+	for i := range workshops {
+		workshops[i].ContentUUIDs = FetchContentUUIDs(workshops[i].UUID)
 	}
 	// TODO: gather data from linked tables:
 	// tags
@@ -24,32 +21,32 @@ func GetAllWorkshops() []models.Workshop {
 
 // GetWorkshopByUUID return workshop with the given id
 func GetWorkshopByUUID(uuid string) models.Workshop {
-	var workshop = daos.GetWorkshopByUUID(uuid).FromDB()
+	var workshop = daos.GetWorkshopByUUID(uuid)
 	// TODO: gather data from linked tables:
 	// tags
 	// likes
 	// authors
-	workshop.ContentUUIDs = FetchContentUUIDs(workshop)
+	workshop.ContentUUIDs = FetchContentUUIDs(workshop.UUID)
 	return workshop
 }
 
 // CreateWorkshop create a new workshop
 func CreateWorkshop(workshop models.Workshop) models.Workshop {
 	workshop.UUID = guuid.New().String()
-	var workshopDB = daos.CreateWorkshop(workshop.ToDB())
+	var newWorkshop = daos.CreateWorkshop(workshop)
 	// TODO: create linked data:
 	// tags
 	// authors
-	return workshopDB.FromDB()
+	return newWorkshop
 }
 
 // UpdateWorkshop update the workshop with the given id to the given data
 func UpdateWorkshop(uuid string, update models.Workshop) models.Workshop {
-	var workshop = daos.UpdateWorkshop(uuid, update.ToDB()).FromDB()
+	var workshop = daos.UpdateWorkshop(uuid, update)
 	// TODO: update linked data
 	// tags
 	// authors
-	workshop.ContentUUIDs = FetchContentUUIDs(workshop)
+	workshop.ContentUUIDs = FetchContentUUIDs(workshop.UUID)
 	return workshop
 }
 
@@ -61,8 +58,8 @@ func DeleteWorkshop(uuid string) {
 }
 
 // FetchContentUUIDs fetch the UUIDs of contained contents
-func FetchContentUUIDs(workshop models.Workshop) []string {
-	var contents = daos.GetContentsFromWorkshop(workshop.UUID)
+func FetchContentUUIDs(workshopUUID string) []string {
+	var contents = daos.GetContentsFromWorkshop(workshopUUID)
 	var UUIDs []string
 	for _, content := range contents {
 		UUIDs = append(UUIDs, content.UUID)
