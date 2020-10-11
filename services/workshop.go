@@ -10,14 +10,15 @@ import (
 func GetAllWorkshops() []models.Workshop {
 	var workshopsDB = daos.GetAllWorkshops()
 	var workshops []models.Workshop
-	for _, workshop := range workshopsDB {
-		workshops = append(workshops, workshop.FromDB())
+	for _, workshopDB := range workshopsDB {
+		var workshop = workshopDB.FromDB()
+		workshop.ContentUUIDs = FetchContentUUIDs(workshop)
+		workshops = append(workshops, workshop)
 	}
 	// TODO: gather data from linked tables:
 	// tags
 	// likes
 	// authors
-	// content IDs
 	return workshops
 }
 
@@ -28,7 +29,7 @@ func GetWorkshopByUUID(uuid string) models.Workshop {
 	// tags
 	// likes
 	// authors
-	// content IDs
+	workshop.ContentUUIDs = FetchContentUUIDs(workshop)
 	return workshop
 }
 
@@ -48,7 +49,7 @@ func UpdateWorkshop(uuid string, update models.Workshop) models.Workshop {
 	// TODO: update linked data
 	// tags
 	// authors
-	// content IDs
+	workshop.ContentUUIDs = FetchContentUUIDs(workshop)
 	return workshop
 }
 
@@ -57,4 +58,14 @@ func DeleteWorkshop(uuid string) {
 	daos.DeleteWorkshop(uuid)
 	// orphaned rows in tags, authors, likes are deleted cascadingly in the db
 	// Content (ProblemStatements) from the workshop is NOT deleted
+}
+
+// FetchContentUUIDs fetch the UUIDs of contained contents
+func FetchContentUUIDs(workshop models.Workshop) []string {
+	var contents = daos.GetContentsFromWorkshop(workshop.UUID)
+	var UUIDs []string
+	for _, content := range contents {
+		UUIDs = append(UUIDs, content.UUID)
+	}
+	return UUIDs
 }

@@ -1,6 +1,8 @@
 package daos
 
 import (
+	"fmt"
+
 	"github.com/tombiers/estuary-backend/models"
 )
 
@@ -27,7 +29,12 @@ func CreateWorkshop(workshop models.WorkshopDB) models.WorkshopDB {
 // UpdateWorkshop updates the workshop with the given id to the given data and return the updated workshop
 func UpdateWorkshop(uuid string, workshop models.WorkshopDB) models.WorkshopDB {
 	var dbWorkshop models.WorkshopDB
-	db.Where("UUID = ?", uuid).First(&dbWorkshop).Updates(workshop)
+	db.Where("UUID = ?", uuid).First(&dbWorkshop)
+	fmt.Println("DAO: hits for update ", dbWorkshop.UUID)
+	if dbWorkshop.UUID != "" {
+		db.Where("UUID = ?", uuid).First(&dbWorkshop).Updates(workshop)
+		fmt.Println("DAO: nach update ", dbWorkshop)
+	}
 	return dbWorkshop
 }
 

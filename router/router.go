@@ -32,6 +32,12 @@ func HandleRequests() {
 	myRouter.HandleFunc("/workshop/{uuid}", controllers.SingleWorkshop).Methods("GET")
 	myRouter.HandleFunc("/update-workshop/{uuid}", controllers.UpdateWorkshop).Methods("PUT")
 	myRouter.HandleFunc("/delete-workshop/{uuid}", controllers.DeleteWorkshop).Methods("DELETE")
+	// problemStatement
+	myRouter.HandleFunc("/new-problemStatement", controllers.CreateNewProblemStatement).Methods("POST")
+	myRouter.HandleFunc("/all-problemStatements", controllers.AllProblemStatements).Methods("GET")
+	myRouter.HandleFunc("/problemStatement/{uuid}", controllers.SingleProblemStatement).Methods("GET")
+	myRouter.HandleFunc("/update-problemStatement/{uuid}", controllers.UpdateProblemStatement).Methods("PUT")
+	myRouter.HandleFunc("/delete-problemStatement/{uuid}", controllers.DeleteProblemStatement).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
