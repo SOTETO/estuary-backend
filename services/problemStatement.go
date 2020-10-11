@@ -16,10 +16,22 @@ func GetAllProblemStatements() []models.ProblemStatement {
 }
 
 // GetProblemStatementByUUID return ProblemStatement with the given uuid
-func GetProblemStatementByUUID(uuid string) models.ProblemStatement {
-	problemStatement, _ := daos.GetProblemStatementByUUID(uuid)
+func GetProblemStatementByUUID(uuid string) (models.ProblemStatement, error) {
+	problemStatement, err := daos.GetProblemStatementByUUID(uuid)
 	problemStatement.Content, _ = daos.GetContentByUUID(uuid)
-	return problemStatement
+	return problemStatement, err
+}
+
+// GetMultipleProblemStatementByUUID get all problemStatements from a list of UUIDs, empty list if none is found
+func GetMultipleProblemStatementByUUID(uuids []string) []models.ProblemStatement {
+	problemStatements := []models.ProblemStatement{}
+	for _, uuid := range uuids {
+		ps, err := GetProblemStatementByUUID(uuid)
+		if err == nil {
+			problemStatements = append(problemStatements, ps)
+		}
+	}
+	return problemStatements
 }
 
 // CreateProblemStatement create a new ProblemStatement

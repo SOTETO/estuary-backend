@@ -37,8 +37,11 @@ func SingleWorkshop(w http.ResponseWriter, r *http.Request) {
 	key := vars["uuid"]
 	fmt.Println("Endpoint Hit: Workshop No: ", key)
 
-	var workshop = services.GetWorkshopByUUID(key)
-	fmt.Println(workshop)
+	var workshop, err = services.GetWorkshopByUUID(key)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
 	json.NewEncoder(w).Encode(workshop)
 }
 

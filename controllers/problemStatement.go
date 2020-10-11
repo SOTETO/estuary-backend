@@ -37,8 +37,11 @@ func SingleProblemStatement(w http.ResponseWriter, r *http.Request) {
 	key := vars["uuid"]
 	fmt.Println("Endpoint Hit: ProblemStatement No: ", key)
 
-	var problemStatement = services.GetProblemStatementByUUID(key)
-	fmt.Println(problemStatement)
+	problemStatement, err := services.GetProblemStatementByUUID(key)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
 	json.NewEncoder(w).Encode(problemStatement)
 }
 

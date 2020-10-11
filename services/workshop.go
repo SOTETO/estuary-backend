@@ -20,14 +20,17 @@ func GetAllWorkshops() []models.Workshop {
 }
 
 // GetWorkshopByUUID return workshop with the given id
-func GetWorkshopByUUID(uuid string) models.Workshop {
-	workshop, _ := daos.GetWorkshopByUUID(uuid)
+func GetWorkshopByUUID(uuid string) (models.Workshop, error) {
+	workshop, err := daos.GetWorkshopByUUID(uuid)
+	if err != nil {
+		return workshop, err
+	}
 	// TODO: gather data from linked tables:
 	// tags
 	// likes
 	// authors
 	workshop.ContentUUIDs = FetchContentUUIDs(workshop.UUID)
-	return workshop
+	return workshop, nil
 }
 
 // CreateWorkshop create a new workshop
