@@ -1,10 +1,5 @@
 package models
 
-// Tabler interface to set the associated db table name for a struct
-type Tabler interface {
-	TableName() string
-}
-
 // TableName overrides the table name used by WorkshopDB to `workshop`
 func (WorkshopDB) TableName() string {
 	return "workshop"
