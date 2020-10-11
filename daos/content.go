@@ -1,39 +1,35 @@
 package daos
 
 import (
-	"fmt"
-
 	"github.com/tombiers/estuary-backend/models"
 )
 
 // GetContentByUUID returns content with the given uuid
-func GetContentByUUID(uuid string) models.Content {
+func GetContentByUUID(uuid string) (models.Content, error) {
 	var dbContent models.ContentDB
-
-	if err := db.Where("UUID = ?", uuid).First(&dbContent).Error; err != nil {
-		fmt.Println("not found: ", err)
-	}
-	return dbContent.FromDB()
+	err := db.Where("UUID = ?", uuid).First(&dbContent).Error
+	return dbContent.FromDB(), err
 }
 
 // CreateContent creates a new content
-func CreateContent(content models.Content) models.Content {
+func CreateContent(content models.Content) (models.Content, error) {
 	var contentDB = content.ToDB()
-	db.Create(&contentDB)
-	return contentDB.FromDB()
+	err := db.Create(&contentDB).Error
+	return contentDB.FromDB(), err
 }
 
 // UpdateContent updates the content with the given uuid to the given data and return the updated content
-func UpdateContent(uuid string, content models.Content) models.Content {
+func UpdateContent(uuid string, content models.Content) (models.Content, error) {
 	var dbContent models.ContentDB
-	db.Where("UUID = ?", uuid).First(&dbContent).Updates(content.ToDB())
-	return dbContent.FromDB()
+	err := db.Where("UUID = ?", uuid).First(&dbContent).Updates(content.ToDB()).Error
+	return dbContent.FromDB(), err
 }
 
 // DeleteContent delete the content with the given uuid
-func DeleteContent(uuid string) {
+func DeleteContent(uuid string) error {
 	var dbContent models.ContentDB
-	db.Where("UUID = ?", uuid).First(&dbContent).Delete(&dbContent)
+	err := db.Where("UUID = ?", uuid).First(&dbContent).Delete(&dbContent).Error
+	return err
 }
 
 // GetContentsFromWorkshop returns all contents belonging to the workshop with the given UUID

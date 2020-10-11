@@ -8,7 +8,7 @@ import (
 
 //GetAllWorkshops return all workshops
 func GetAllWorkshops() []models.Workshop {
-	var workshops = daos.GetAllWorkshops()
+	workshops, _ := daos.GetAllWorkshops()
 	for i := range workshops {
 		workshops[i].ContentUUIDs = FetchContentUUIDs(workshops[i].UUID)
 	}
@@ -21,7 +21,7 @@ func GetAllWorkshops() []models.Workshop {
 
 // GetWorkshopByUUID return workshop with the given id
 func GetWorkshopByUUID(uuid string) models.Workshop {
-	var workshop = daos.GetWorkshopByUUID(uuid)
+	workshop, _ := daos.GetWorkshopByUUID(uuid)
 	// TODO: gather data from linked tables:
 	// tags
 	// likes
@@ -33,7 +33,7 @@ func GetWorkshopByUUID(uuid string) models.Workshop {
 // CreateWorkshop create a new workshop
 func CreateWorkshop(workshop models.Workshop) models.Workshop {
 	workshop.UUID = guuid.New().String()
-	var newWorkshop = daos.CreateWorkshop(workshop)
+	newWorkshop, _ := daos.CreateWorkshop(workshop)
 	// TODO: create linked data:
 	// tags
 	// authors
@@ -42,7 +42,7 @@ func CreateWorkshop(workshop models.Workshop) models.Workshop {
 
 // UpdateWorkshop update the workshop with the given id to the given data
 func UpdateWorkshop(uuid string, update models.Workshop) models.Workshop {
-	var workshop = daos.UpdateWorkshop(uuid, update)
+	var workshop, _ = daos.UpdateWorkshop(uuid, update)
 	// TODO: update linked data
 	// tags
 	// authors
