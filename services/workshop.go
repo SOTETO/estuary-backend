@@ -1,6 +1,8 @@
 package services
 
 import (
+	"fmt"
+
 	guuid "github.com/google/uuid"
 	"github.com/tombiers/estuary-backend/daos"
 	"github.com/tombiers/estuary-backend/models"
@@ -11,11 +13,11 @@ func GetAllWorkshops() []models.Workshop {
 	workshops, _ := daos.GetAllWorkshops()
 	for i := range workshops {
 		workshops[i].ContentUUIDs = FetchContentUUIDs(workshops[i].UUID)
+		workshops[i].Authors = daos.GetAuthorsFromWorkshop(workshops[i].UUID)
 	}
 	// TODO: gather data from linked tables:
 	// tags
 	// likes
-	// authors
 	return workshops
 }
 
@@ -25,31 +27,40 @@ func GetWorkshopByUUID(uuid string) (models.Workshop, error) {
 	if err != nil {
 		return workshop, err
 	}
-	// TODO: gather data from linked tables:
-	// tags
-	// likes
-	// authors
+	// TODO: tags, likes
+
+	workshop.Authors = daos.GetAuthorsFromWorkshop(uuid)
 	workshop.ContentUUIDs = FetchContentUUIDs(workshop.UUID)
 	return workshop, nil
 }
 
 // CreateWorkshop create a new workshop
 func CreateWorkshop(workshop models.Workshop) models.Workshop {
+	fmt.Println("Create a new workshop: ", workshop)
 	workshop.UUID = guuid.New().String()
 	newWorkshop, _ := daos.CreateWorkshop(workshop)
-	// TODO: create linked data:
-	// tags
+	// TODO: tags
+
 	// authors
+	errAuthors := daos.SetAuthors(workshop.UUID, workshop.Authors)
+	if errAuthors == nil {
+		newWorkshop.Authors = workshop.Authors
+	}
 	return newWorkshop
 }
 
 // UpdateWorkshop update the workshop with the given id to the given data
 func UpdateWorkshop(uuid string, update models.Workshop) models.Workshop {
+	fmt.Println("Update workshop:", update)
 	var workshop, _ = daos.UpdateWorkshop(uuid, update)
-	// TODO: update linked data
-	// tags
+	// TODO: tags
+
 	// authors
-	workshop.ContentUUIDs = FetchContentUUIDs(workshop.UUID)
+	err1, err2 := daos.OverrideAuthors(uuid, update.Authors)
+	if err1 == nil && err2 == nil {
+		workshop.Authors = update.Authors
+	}
+	workshop.ContentUUIDs = FetchContentUUIDs(uuid)
 	return workshop
 }
 

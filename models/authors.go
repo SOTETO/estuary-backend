@@ -26,3 +26,12 @@ func (db AuthorDB) FromDB() Author {
 	author.Visible = db.Visible
 	return author
 }
+
+// ToDB tales the provided workshop UUID and creates a new AuthorDB object
+func (author Author) ToDB(workshopUUID string) AuthorDB {
+	var db AuthorDB
+	db.WorkshopUUID = workshopUUID
+	db.UserUUID = author.UserUUID
+	db.Visible = author.Visible
+	return db
+}

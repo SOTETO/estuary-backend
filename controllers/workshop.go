@@ -17,7 +17,6 @@ func CreateNewWorkshop(w http.ResponseWriter, r *http.Request) {
 	// get the body of the POST request
 	// return the string response containing the request body
 	reqBody, _ := ioutil.ReadAll(r.Body)
-
 	var workshop models.Workshop
 	json.Unmarshal(reqBody, &workshop)
 	var newWorkshop = services.CreateWorkshop(workshop)
