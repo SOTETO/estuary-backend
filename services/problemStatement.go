@@ -46,7 +46,7 @@ func CreateProblemStatement(problemStatement models.ProblemStatement) models.Pro
 // UpdateProblemStatement update the problemStatement with the given uuid to the given data
 func UpdateProblemStatement(uuid string, update models.ProblemStatement) models.ProblemStatement {
 	var problemStatement, _ = daos.UpdateProblemStatement(uuid, update)
-	problemStatement.Content, _ = daos.UpdateContent(uuid, problemStatement.Content)
+	problemStatement.Content, _ = daos.UpdateContent(uuid, update.Content)
 	return problemStatement
 }
 

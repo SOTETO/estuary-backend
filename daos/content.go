@@ -19,9 +19,10 @@ func CreateContent(content models.Content) (models.Content, error) {
 }
 
 // UpdateContent updates the content with the given uuid to the given data and return the updated content
-func UpdateContent(uuid string, content models.Content) (models.Content, error) {
+func UpdateContent(uuid string, update models.Content) (models.Content, error) {
 	var dbContent models.ContentDB
-	err := db.Where("UUID = ?", uuid).First(&dbContent).Updates(content.ToDB()).Error
+	updateDB := update.ToDB()
+	err := db.Where("UUID = ?", uuid).First(&dbContent).Updates(updateDB).Error
 	return dbContent.FromDB(), err
 }
 
