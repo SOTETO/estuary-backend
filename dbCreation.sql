@@ -15,15 +15,6 @@ CREATE SCHEMA IF NOT EXISTS `estuary` DEFAULT CHARACTER SET utf8 ;
 USE `estuary` ;
 
 -- -----------------------------------------------------
--- Table `estuary`.`user`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `estuary`.`user` (
-  `UUID` VARCHAR(36) NOT NULL COMMENT 'external',
-  PRIMARY KEY (`UUID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `estuary`.`workshop`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`workshop` (
@@ -93,14 +84,8 @@ CREATE TABLE IF NOT EXISTS `estuary`.`likes` (
   `ID` INT NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_UUID` VARCHAR(36) NOT NULL,
   `Conent_ID` VARCHAR(36) NOT NULL,
-  INDEX `fk_likes_user1_idx` (`user_UUID` ASC) VISIBLE,
   PRIMARY KEY (`ID`),
   INDEX `fk_likes_ProblemStatement1_idx` (`Conent_ID` ASC) VISIBLE,
-  CONSTRAINT `fk_likes_user1`
-    FOREIGN KEY (`user_UUID`)
-    REFERENCES `estuary`.`user` (`UUID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_likes_ProblemStatement1`
     FOREIGN KEY (`Conent_ID`)
     REFERENCES `estuary`.`Content` (`UUID`)
@@ -118,17 +103,11 @@ CREATE TABLE IF NOT EXISTS `estuary`.`authors` (
   `user_UUID` VARCHAR(36) NOT NULL,
   `visible` TINYINT NOT NULL,
   INDEX `fk_authors_workshop1_idx` (`workshop_UUID` ASC) VISIBLE,
-  INDEX `fk_authors_user1_idx` (`user_UUID` ASC) VISIBLE,
   PRIMARY KEY (`ID`),
   CONSTRAINT `fk_authors_workshop1`
     FOREIGN KEY (`workshop_UUID`)
     REFERENCES `estuary`.`workshop` (`UUID`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_authors_user1`
-    FOREIGN KEY (`user_UUID`)
-    REFERENCES `estuary`.`user` (`UUID`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
