@@ -56,9 +56,13 @@ func UpdateWorkshop(uuid string, update models.Workshop) models.Workshop {
 	// TODO: tags
 
 	// authors
-	err1, err2 := daos.OverrideAuthors(uuid, update.Authors)
-	if err1 == nil && err2 == nil {
-		workshop.Authors = update.Authors
+	errs := daos.OverrideAuthors(uuid, update.Authors)
+	if errs[0] == nil {
+		for i, err := range errs {
+			if i > 0 && err == nil {
+				workshop.Authors = append(workshop.Authors, update.Authors[i-1])
+			}
+		}
 	}
 	workshop.ContentUUIDs = FetchContentUUIDs(uuid)
 	return workshop

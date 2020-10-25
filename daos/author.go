@@ -5,14 +5,16 @@ import (
 )
 
 // SetAuthors create new author record in the db
-func SetAuthors(workshopUUID string, authors []models.Author) error {
+func SetAuthors(workshopUUID string, authors []models.Author) []error {
 	authorsDB := []models.AuthorDB{}
+	errs := []error{}
 	for _, author := range authors {
 		authorsDB = append(authorsDB, author.ToDB(workshopUUID))
 		authorDB := author.ToDB(workshopUUID)
-		db.Create(&authorDB)
+		err := db.Create(&authorDB).Error
+		errs = append(errs, err)
 	}
-	return err
+	return errs
 }
 
 // UpdateAuthor updates the author record for the given workshop
@@ -43,9 +45,11 @@ func GetAuthorsFromWorkshop(workshopUUID string) []models.Author {
 }
 
 // OverrideAuthors delete all existing authors for this workshop and set new ones
-func OverrideAuthors(workshopUUID string, authors []models.Author) (error, error) {
+func OverrideAuthors(workshopUUID string, authors []models.Author) []error {
 	var authorDB models.AuthorDB
 	errDelete := db.Where("workshop_UUID = ?", workshopUUID).Delete(&authorDB).Error
 	errSet := SetAuthors(workshopUUID, authors)
-	return errDelete, errSet
+	errs := []error{errDelete}
+	errs = append(errs, errSet...)
+	return errs
 }
