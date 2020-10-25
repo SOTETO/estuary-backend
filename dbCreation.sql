@@ -50,12 +50,12 @@ ENGINE = InnoDB;
 -- Table `estuary`.`workshopTags`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`workshopTags` (
-  `UUID` VARCHAR(36) NOT NULL COMMENT 'UUID',
+  `ID` INT NOT NULL COMMENT 'ID',
   `workshop_UUID` VARCHAR(36) NOT NULL,
   `tags_UUID` VARCHAR(36) NOT NULL,
   INDEX `fk_workshopTags_workshop_idx` (`workshop_UUID` ASC) VISIBLE,
   INDEX `fk_workshopTags_tags1_idx` (`tags_UUID` ASC) VISIBLE,
-  PRIMARY KEY (`UUID`),
+  PRIMARY KEY (`ID`),
   CONSTRAINT `fk_workshopTags_workshop`
     FOREIGN KEY (`workshop_UUID`)
     REFERENCES `estuary`.`workshop` (`UUID`)
@@ -90,11 +90,11 @@ ENGINE = InnoDB;
 -- Table `estuary`.`likes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`likes` (
-  `UUID` VARCHAR(36) NOT NULL COMMENT 'UUID',
+  `ID` INT NOT NULL COMMENT 'ID',
   `user_UUID` VARCHAR(36) NOT NULL,
   `Conent_ID` VARCHAR(36) NOT NULL,
   INDEX `fk_likes_user1_idx` (`user_UUID` ASC) VISIBLE,
-  PRIMARY KEY (`UUID`),
+  PRIMARY KEY (`ID`),
   INDEX `fk_likes_ProblemStatement1_idx` (`Conent_ID` ASC) VISIBLE,
   CONSTRAINT `fk_likes_user1`
     FOREIGN KEY (`user_UUID`)
@@ -113,13 +113,13 @@ ENGINE = InnoDB;
 -- Table `estuary`.`authors`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`authors` (
-  `UUID` VARCHAR(36) NOT NULL COMMENT 'UUID',
+  `ID` INT NOT NULL COMMENT 'ID',
   `workshop_UUID` VARCHAR(36) NOT NULL,
   `user_UUID` VARCHAR(36) NOT NULL,
   `visible` TINYINT NOT NULL,
   INDEX `fk_authors_workshop1_idx` (`workshop_UUID` ASC) VISIBLE,
   INDEX `fk_authors_user1_idx` (`user_UUID` ASC) VISIBLE,
-  PRIMARY KEY (`UUID`),
+  PRIMARY KEY (`ID`),
   CONSTRAINT `fk_authors_workshop1`
     FOREIGN KEY (`workshop_UUID`)
     REFERENCES `estuary`.`workshop` (`UUID`)
@@ -147,11 +147,11 @@ ENGINE = InnoDB;
 -- Table `estuary`.`ContenttLink`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`ContenttLink` (
-  `UUID` VARCHAR(36) NOT NULL COMMENT 'UUID',
+  `ID` INT NOT NULL COMMENT 'ID',
   `linkTag_UUID` VARCHAR(36) NOT NULL,
   `Content1_UUID` VARCHAR(36) NOT NULL,
   `Content2_UUID` VARCHAR(36) NOT NULL,
-  PRIMARY KEY (`UUID`),
+  PRIMARY KEY (`ID`),
   INDEX `fk_ProblemStatementLink_linkTag1_idx` (`linkTag_UUID` ASC) VISIBLE,
   INDEX `fk_ContenttLink_Content1_idx` (`Content1_UUID` ASC) VISIBLE,
   INDEX `fk_ContenttLink_Content2_idx` (`Content2_UUID` ASC) VISIBLE,
