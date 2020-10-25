@@ -50,7 +50,7 @@ ENGINE = InnoDB;
 -- Table `estuary`.`workshopTags`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`workshopTags` (
-  `ID` INT NOT NULL COMMENT 'ID',
+  `ID` INT NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `workshop_UUID` VARCHAR(36) NOT NULL,
   `tags_UUID` VARCHAR(36) NOT NULL,
   INDEX `fk_workshopTags_workshop_idx` (`workshop_UUID` ASC) VISIBLE,
@@ -90,7 +90,7 @@ ENGINE = InnoDB;
 -- Table `estuary`.`likes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`likes` (
-  `ID` INT NOT NULL COMMENT 'ID',
+  `ID` INT NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_UUID` VARCHAR(36) NOT NULL,
   `Conent_ID` VARCHAR(36) NOT NULL,
   INDEX `fk_likes_user1_idx` (`user_UUID` ASC) VISIBLE,
@@ -113,7 +113,7 @@ ENGINE = InnoDB;
 -- Table `estuary`.`authors`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`authors` (
-  `ID` INT NOT NULL COMMENT 'ID',
+  `ID` INT NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `workshop_UUID` VARCHAR(36) NOT NULL,
   `user_UUID` VARCHAR(36) NOT NULL,
   `visible` TINYINT NOT NULL,
@@ -147,7 +147,7 @@ ENGINE = InnoDB;
 -- Table `estuary`.`ContenttLink`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `estuary`.`ContenttLink` (
-  `ID` INT NOT NULL COMMENT 'ID',
+  `ID` INT NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `linkTag_UUID` VARCHAR(36) NOT NULL,
   `Content1_UUID` VARCHAR(36) NOT NULL,
   `Content2_UUID` VARCHAR(36) NOT NULL,
