@@ -7,7 +7,7 @@ func (AuthorDB) TableName() string {
 
 //AuthorDB model for a record in the db
 type AuthorDB struct {
-	UUID         string `gorm:"column:UUID; primaryKey"`
+	ID           int    `gorm:"column:ID; primaryKey"`
 	WorkshopUUID string `gorm:"column:workshop_UUID"`
 	UserUUID     string `gorm:"column:user_UUID"`
 	Visible      bool   `gorm:"column:visible"`

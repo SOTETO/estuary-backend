@@ -7,7 +7,7 @@ func (ContentLinkDB) TableName() string {
 
 // ContentLinkDB a ContentLink record in the db
 type ContentLinkDB struct {
-	UUID     string `gorm:"column:UUID; primaryKey"`
+	ID       int    `gorm:"column:ID; primaryKey"`
 	LinkTag  string `gorm:"column:linkTag_UUID"`
 	Content1 string `gorm:"column:Content1_UUID"`
 	Content2 string `gorm:"column:Content2_UUID"`

@@ -7,7 +7,7 @@ func (workshopTagsDB) TableName() string {
 
 // TagDB a tag record in the db
 type workshopTagsDB struct {
-	UUID         string `gorm:"column:UUID; primaryKey"`
+	ID           string `gorm:"column:ID; primaryKey"`
 	WorkshopUUID string `gorm:"column:workshopUUID"`
 	TagUUID      string `gorm:"column:tags_UUID"`
 }

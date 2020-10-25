@@ -7,7 +7,7 @@ func (LikesDB) TableName() string {
 
 // LikesDB a ContentLink record in the db
 type LikesDB struct {
-	UUID       string `gorm:"column:UUID; primaryKey"`
+	ID         string `gorm:"column:ID; primaryKey"`
 	UserUUID   string `gorm:"column:user_UUID"`
 	ConentUUID string `gorm:"column:Content_ID"`
 }
