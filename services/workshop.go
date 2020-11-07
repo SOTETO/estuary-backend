@@ -14,9 +14,12 @@ func GetAllWorkshops() []models.Workshop {
 	for i := range workshops {
 		workshops[i].ContentUUIDs = FetchContentUUIDs(workshops[i].UUID)
 		workshops[i].Authors = daos.GetAuthorsFromWorkshop(workshops[i].UUID)
+		tags, err := daos.GetTagsFromWorkshop(workshops[i].UUID)
+		if err == nil {
+			workshops[i].Tags = tags
+		}
 	}
 	// TODO: gather data from linked tables:
-	// tags
 	// likes
 	return workshops
 }
@@ -31,6 +34,10 @@ func GetWorkshopByUUID(uuid string) (models.Workshop, error) {
 
 	workshop.Authors = daos.GetAuthorsFromWorkshop(uuid)
 	workshop.ContentUUIDs = FetchContentUUIDs(workshop.UUID)
+	tags, err := daos.GetTagsFromWorkshop(workshop.UUID)
+	if err == nil {
+		workshop.Tags = tags
+	}
 	return workshop, nil
 }
 

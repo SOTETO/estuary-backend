@@ -22,15 +22,17 @@ func RemoveTag(workshopUUID string, tagUUID string) error {
 }
 
 // GetTagsFromWorkshop returns all tags belonging to the workshop with the given UUID
-func GetTagsFromWorkshop(workshopUUID string) ([]string, error) {
+func GetTagsFromWorkshop(workshopUUID string) ([]models.Tag, error) {
 	workshopTagsDB := []models.WorkshopTagDB{}
 	err := db.Where("workshop_UUID = ?", workshopUUID).Find(&workshopTagsDB).Error
 
-	tagUUIDs := []string{}
+	tags := []models.Tag{}
 	for _, value := range workshopTagsDB {
-		tagUUIDs = append(tagUUIDs, value.TagUUID)
+		var tagDB models.TagDB
+		db.Where("UUID = ?", value.TagUUID).Find(&tagDB)
+		tags = append(tags, tagDB.FromDB())
 	}
-	return tagUUIDs, err
+	return tags, err
 }
 
 // OverrideTags delete all existing tags for this workshop and set new ones

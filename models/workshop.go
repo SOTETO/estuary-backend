@@ -22,7 +22,7 @@ type Workshop struct {
 	LocationName  string   `json:"LocationName"`
 	LocationOnMap string   `json:"LocationOnMap"`
 	Likes         int      `json:"upvotes"`
-	Tags          []string `json:"tags"`
+	Tags          []Tag    `json:"tags"`
 	Authors       []Author `json:"authors"`
 	ContentUUIDs  []string `json:"content"`
 }
