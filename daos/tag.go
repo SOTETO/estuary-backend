@@ -36,3 +36,14 @@ func UpdateTag(tagUUID string, update models.Tag) (models.Tag, error) {
 	err := db.Where("UUID = ?", tagUUID).First(&tagDB).Updates(updateDB).Error
 	return tagDB.FromDB(), err
 }
+
+// FindTags search for all tags containing the query
+func FindTags(query string) ([]models.Tag, error) {
+	tagsDB := []models.TagDB{}
+	err := db.Where("name LIKE ?", "%"+query+"%").Find(&tagsDB).Error
+	tags := []models.Tag{}
+	for _, tagDB := range tagsDB {
+		tags = append(tags, tagDB.FromDB())
+	}
+	return tags, err
+}

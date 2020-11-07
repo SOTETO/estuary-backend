@@ -22,6 +22,8 @@ func HandleRequests() {
 	myRouter.HandleFunc("/workshop/{uuid}", controllers.SingleWorkshop).Methods("GET")
 	myRouter.HandleFunc("/update-workshop/{uuid}", controllers.UpdateWorkshop).Methods("PUT")
 	myRouter.HandleFunc("/delete-workshop/{uuid}", controllers.DeleteWorkshop).Methods("DELETE")
+	// workshop tags
+	myRouter.HandleFunc("/tags/{query}", controllers.FindTags).Methods("GET")
 	// content
 	myRouter.HandleFunc("/content", controllers.AllContentByUUID).Methods("POST")
 	// problemStatement
