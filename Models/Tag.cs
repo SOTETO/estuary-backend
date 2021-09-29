@@ -5,8 +5,10 @@ namespace estuary_backend.Models
 {
     public class Tag
     {
+        public Guid Id { get; set; }
+
         public string Name { get; set; }
 
-        public List<Workshop> Workshops { get; set; } = new List<Workshop>();
+        public List<WorkshopTag> WorkshopTags { get; set; }
     }
 }

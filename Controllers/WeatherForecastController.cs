@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using estuary_backend.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -26,28 +27,14 @@ namespace estuary_backend.Controllers
         [HttpGet]
         public IEnumerable<Workshop> Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Workshop
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return new[] { new Workshop() };
         }
 
         [HttpPost]
         [Route("subroute")]
         public IEnumerable<Workshop> GetSub()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 2).Select(index => new Workshop
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return new[] { new Workshop() };
         }
     }
 }

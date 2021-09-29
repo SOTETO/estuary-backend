@@ -11,7 +11,9 @@ namespace estuary_backend.Models
 
         public Workshop Workshop { get; set; }
 
-        public List<(Content content, string linkTag)> RelatedContent { get; set; }
+        public Guid WorkshopId {  get; set; }
+
+        public List<ContentLink> RelatedContent { get; set; }
 
         public List<Like> Likes { get; set; }
 
