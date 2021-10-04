@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using estuary_backend.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,9 +12,9 @@ namespace estuary_backend.Controllers
     {
         // GET: api/<WorkshopController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Workshop> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new Workshop[] { new Workshop(), new Workshop() };
         }
 
         // GET api/<WorkshopController>/5
