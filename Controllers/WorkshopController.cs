@@ -1,12 +1,11 @@
 ﻿using estuary_backend.Models;
+using estuary_backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace estuary_backend.Controllers
 {
@@ -14,6 +13,13 @@ namespace estuary_backend.Controllers
     [ApiController]
     public class WorkshopController : ControllerBase
     {
+        private readonly IWorkshopService workshopService;
+
+        public WorkshopController(IWorkshopService workshopService)
+        {
+            this.workshopService = workshopService;
+        }
+
         // GET: api/<WorkshopController>
         [HttpGet]
         public IEnumerable<Workshop> Get()
@@ -32,15 +38,7 @@ namespace estuary_backend.Controllers
         [HttpGet("{id}")]
         public Workshop Get(int id)
         {
-            using var ctx = new EstuaryDbContext();
-            var workshops = ctx.Workshops
-                .Where(ws => ws.Id == id)
-                .Include(ws => ws.Tags)
-                .Include(ws => ws.Content)
-                .Include(ws => ws.Authors)
-                .FirstOrDefault();
-
-            return workshops;
+            return workshopService.GetWorkshopById(id);
         }
 
         // GET api/<WorkshopController>/Tag:Improvements
@@ -60,9 +58,9 @@ namespace estuary_backend.Controllers
 
         // POST api/<WorkshopController>
         [HttpPost]
-        public string Post([FromBody] Workshop value)
+        public int Post([FromBody] Workshop value)
         {
-            return $"Post {value.Teaser}";
+            return workshopService.CreateWorkshop(value);
         }
 
         // PUT api/<WorkshopController>/5

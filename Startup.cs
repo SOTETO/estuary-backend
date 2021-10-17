@@ -1,3 +1,4 @@
+using estuary_backend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +29,7 @@ namespace estuary_backend
         {
 
             services.AddControllers();
+            services.AddTransient<IWorkshopService, WorkshopService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "estuary_backend", Version = "v1" });
