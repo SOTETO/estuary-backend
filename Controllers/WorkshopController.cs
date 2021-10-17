@@ -64,17 +64,25 @@ namespace estuary_backend.Controllers
         }
 
         // PUT api/<WorkshopController>/5
-        [HttpPut("{id}")]
-        public string Put(int id, [FromBody] string value)
+        [HttpPut]
+        public IActionResult Put([FromBody] Workshop value)
         {
-            return $"Put {value} to {id}";
+            if (!workshopService.UpdateWorkshop(value))
+            {
+                return NotFound();
+            }
+            return Ok();
         }
 
         // DELETE api/<WorkshopController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
-            workshopService.DeleteWorkshop(id);
+            if (!workshopService.DeleteWorkshop(id))
+            {
+                return NotFound();
+            }
+            return Ok();
         }
 
         #region for testing only

@@ -10,13 +10,16 @@ namespace estuary_backend.Services
 
         int CreateWorkshop(Workshop workshop);
 
-        void DeleteWorkshop(int id);
+        bool DeleteWorkshop(int id);
+
+        bool UpdateWorkshop(Workshop workshop);
     }
 
     public class WorkshopService : IWorkshopService
     {
         public int CreateWorkshop(Workshop workshop)
         {
+            workshop.Id = 0;
             using var ctx = new EstuaryDbContext();
             ctx.Add(workshop);
             ctx.SaveChanges();
@@ -37,15 +40,31 @@ namespace estuary_backend.Services
             return workshops;
         }
 
-        public void DeleteWorkshop(int id)
+        public bool DeleteWorkshop(int id)
         {
             using var ctx = new EstuaryDbContext();
             var workshop = GetWorkshopById(id);
             if (workshop is not null)
             {
-                ctx.Remove(workshop);
+                ctx.Workshops.Remove(workshop);
                 ctx.SaveChanges();
+                return true;
             }
+            return false;
+        }
+
+        public bool UpdateWorkshop(Workshop workshop)
+        {
+            using var ctx = new EstuaryDbContext();
+            var dbWorkshop = ctx.Workshops.Where(ws => ws.Id == workshop.Id).FirstOrDefault();
+            if (dbWorkshop is not null)
+            {
+                dbWorkshop.Update(workshop);
+                ctx.SaveChanges();
+                return true;
+            }
+            return false;
+
         }
     }
 }

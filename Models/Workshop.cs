@@ -23,5 +23,16 @@ namespace estuary_backend.Models
 
         public List<Author> Authors {  get; set;}
 
+        public void Update(Workshop source)
+        {
+            this.Date = source.Date;
+            this.Teaser = source.Teaser;
+            this.LocationName = source.LocationName;
+            this.LocationMap = source.LocationMap;
+            this.Tags = source.Tags;
+            this.Content = source.Content;
+            this.Authors = source.Authors;
+        }
+
     }
 }
