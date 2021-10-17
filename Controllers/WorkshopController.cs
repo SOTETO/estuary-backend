@@ -28,13 +28,66 @@ namespace estuary_backend.Controllers
             return workshops;
         }
 
+        // GET api/<WorkshopController>/5
+        [HttpGet("{id}")]
+        public Workshop Get(int id)
+        {
+            using var ctx = new EstuaryDbContext();
+            var workshops = ctx.Workshops
+                .Where(ws => ws.Id == id)
+                .Include(ws => ws.Tags)
+                .Include(ws => ws.Content)
+                .Include(ws => ws.Authors)
+                .FirstOrDefault();
+
+            return workshops;
+        }
+
+        // GET api/<WorkshopController>/Tag:Improvements
+        [HttpGet("Tag:{tag}")]
+        public IEnumerable<Workshop> Get(string tag)
+        {
+            using var ctx = new EstuaryDbContext();
+            var workshops = ctx.Workshops
+                .Where(ws => ws.Tags.Any(t => string.Equals(t.Name, tag)))
+                .Include(ws => ws.Tags)
+                .Include(ws => ws.Content)
+                .Include(ws => ws.Authors)
+                .ToList();
+
+            return workshops;
+        }
+
+        // POST api/<WorkshopController>
+        [HttpPost]
+        public string Post([FromBody] Workshop value)
+        {
+            return $"Post {value.Teaser}";
+        }
+
+        // PUT api/<WorkshopController>/5
+        [HttpPut("{id}")]
+        public string Put(int id, [FromBody] string value)
+        {
+            return $"Put {value} to {id}";
+        }
+
+        // DELETE api/<WorkshopController>/5
+        [HttpDelete("{id}")]
+        public string Delete(int id)
+        {
+            return $"Delete: {id}";
+        }
+
+        #region for testing only
+
         // GET api/<WorkshopController>/Seed
         [HttpGet("Seed")]
         public string Seed()
         {
             using var ctx = new EstuaryDbContext();
 
-            var tag1 = new Tag { Name = "Improvements"};
+            var tag1 = new Tag { Name = "Improvements" };
             var tag2 = new Tag { Name = "Tag2" };
 
             var workshop1 = new Workshop
@@ -64,47 +117,6 @@ namespace estuary_backend.Controllers
             return "OK";
         }
 
-        // GET api/<WorkshopController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return $"value: {id}";
-        }
-
-        // GET api/<WorkshopController>/Tag:Improvements
-        [HttpGet("Tag:{tag}")]
-        public IEnumerable<Workshop> Get(string tag)
-        {
-            using var ctx = new EstuaryDbContext();
-            var workshops = ctx.Workshops
-                .Where(ws => ws.Tags.Any(t => string.Equals(t.Name, tag)))
-                .Include(ws => ws.Tags)
-                .Include(ws => ws.Content)
-                .Include(ws => ws.Authors)
-                .ToList();
-
-            return workshops;
-        }
-
-        // POST api/<WorkshopController>
-        [HttpPost]
-        public string Post([FromBody] string value)
-        {
-            return $"Post {value}";
-        }
-
-        // PUT api/<WorkshopController>/5
-        [HttpPut("{id}")]
-        public string Put(int id, [FromBody] string value)
-        {
-            return $"Put {value} to {id}";
-        }
-
-        // DELETE api/<WorkshopController>/5
-        [HttpDelete("{id}")]
-        public string Delete(int id)
-        {
-            return $"Delete: {id}";
-        }
+        #endregion
     }
 }
