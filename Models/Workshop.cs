@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace estuary_backend.Models
 {
     public class Workshop
     {
-        public Guid Id {  get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id {  get; set; }
 
         public DateTime Date { get; set; }
 
@@ -15,7 +17,7 @@ namespace estuary_backend.Models
 
         public string LocationMap {  get; set; }
 
-        public List<Tag> Tags { get; set; }
+        public ICollection<Tag> Tags { get; set; }
 
         public List<Content> Content { get; set; }
 

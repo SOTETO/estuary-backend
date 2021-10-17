@@ -1,5 +1,6 @@
 ﻿using estuary_backend.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
 
@@ -7,39 +8,60 @@ namespace estuary_backend
 {
     public class EstuaryDbContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlite("Data Source=estuary_backend.db");
+        protected override void OnConfiguring(DbContextOptionsBuilder options) 
+            => options
+                .UseSqlite("Data Source=estuary_backend.db")
+                .LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted })
+                .EnableSensitiveDataLogging();
 
         public DbSet<Workshop> Workshops { get; set; }
 
         public DbSet<PropblemStatement> PropblemStatements { get; set; }
 
         public DbSet<Tag> Tags { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+/*  
+        protected override async void OnModelCreating(ModelBuilder modelBuilder)
         {
+          
             #region seed test data
 
-            var firstTag = new Tag { Name = "Improvements", Id = Guid.NewGuid() };
+            var tag1 = new Tag { Name = "Improvements", Id = 1 };
+            var tag2 = new Tag { Name = "Tag2", Id = 2 };
 
-            modelBuilder.Entity<Tag>().HasData(firstTag);
 
 
-            var firstWorkshop = new Workshop
+            var workshop1 = new Workshop
             {
-                Id = Guid.NewGuid(),
+                Id = 1,
                 Date = DateTime.Now,
                 Authors = new List<Author> { },
                 Teaser = "Lorem ipsum dolor sit amet.",
                 LocationName = "Hamburg", 
-                LocationMap = "https://goo.gl/maps/mbnen1jr8C81J6vU9"
+                LocationMap = "https://goo.gl/maps/mbnen1jr8C81J6vU9",
+                Tags = new List<Tag> { tag1, tag2 }
             };
-            modelBuilder.Entity<Workshop>().HasData(firstWorkshop);
 
+            var workshop2 = new Workshop
+            {
+                Id = 2,
+                Date = DateTime.Now,
+                Authors = new List<Author> { },
+                Teaser = "Lorem ipsum dolor sit amet.",
+                LocationName = "Berlin",
+                LocationMap = "https://goo.gl/maps/mbnen1jr6C21J6vU9",
+                Tags = new List<Tag> { tag1 }
+            };
+
+
+            modelBuilder.Entity<Workshop>().HasData(workshop1, workshop2, tag1, tag2);
+
+
+
+            /*
 
             var firstProblemStatement = new PropblemStatement
             {
-                Id = Guid.NewGuid(),
-                WorkshopId = firstWorkshop.Id,
+                //WorkshopId = firstWorkshop.Id,
                 Title = "ProblemStatement 1",
                 Iam = "Lorem ipsum",
                 Iwant = "dolor sit amet, consetetur sadipscing elitr",
@@ -51,15 +73,16 @@ namespace estuary_backend
             modelBuilder.Entity<PropblemStatement>().HasData(firstProblemStatement);
 
 
-            var workshopTag = new WorkshopTag { Id = Guid.NewGuid(), TagId = firstTag.Id, WorkshopId = firstWorkshop.Id };
+            // var workshopTag = new WorkshopTag { Id = Guid.NewGuid(), TagId = firstTag.Id, WorkshopId = firstWorkshop.Id };
 
             modelBuilder.Entity<WorkshopTag>().HasData(workshopTag);
-
+            
 
             #endregion
-
+         
+               
             base.OnModelCreating(modelBuilder);
 
-        }
+        }*/
     }
 }

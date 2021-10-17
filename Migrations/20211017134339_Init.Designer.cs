@@ -9,8 +9,8 @@ using estuary_backend;
 namespace estuary_backend.Migrations
 {
     [DbContext(typeof(EstuaryDbContext))]
-    [Migration("20210929154141_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211017134339_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,18 +18,37 @@ namespace estuary_backend.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.10");
 
+            modelBuilder.Entity("TagWorkshop", b =>
+                {
+                    b.Property<int>("TagsId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("WorkshopsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("TagsId", "WorkshopsId");
+
+                    b.HasIndex("WorkshopsId");
+
+                    b.ToTable("TagWorkshop");
+                });
+
             modelBuilder.Entity("estuary_backend.Models.Author", b =>
                 {
-                    b.Property<string>("ID")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DropsID")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Visible")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid?>("WorkshopId")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("WorkshopId")
+                        .HasColumnType("INTEGER");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("WorkshopId");
 
@@ -38,9 +57,9 @@ namespace estuary_backend.Migrations
 
             modelBuilder.Entity("estuary_backend.Models.Content", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -49,8 +68,8 @@ namespace estuary_backend.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("WorkshopId")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("WorkshopId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -63,12 +82,12 @@ namespace estuary_backend.Migrations
 
             modelBuilder.Entity("estuary_backend.Models.ContentLink", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<Guid?>("ContentId")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("ContentId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("LinkTag")
                         .HasColumnType("TEXT");
@@ -82,12 +101,12 @@ namespace estuary_backend.Migrations
 
             modelBuilder.Entity("estuary_backend.Models.Like", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<Guid?>("ContentId")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("ContentId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
@@ -101,35 +120,23 @@ namespace estuary_backend.Migrations
 
             modelBuilder.Entity("estuary_backend.Models.Tag", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("WorkshopId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("WorkshopId");
-
                     b.ToTable("Tags");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("95a53535-2633-41a5-802b-7ad57efcc0ef"),
-                            Name = "Improvements"
-                        });
                 });
 
             modelBuilder.Entity("estuary_backend.Models.Workshop", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
@@ -146,45 +153,6 @@ namespace estuary_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Workshops");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("17bb47aa-c617-40c7-b88d-a3fed6bdc03e"),
-                            Date = new DateTime(2021, 9, 29, 17, 41, 41, 97, DateTimeKind.Local).AddTicks(483),
-                            LocationMap = "https://goo.gl/maps/mbnen1jr8C81J6vU9",
-                            LocationName = "Hamburg",
-                            Teaser = "Lorem ipsum dolor sit amet."
-                        });
-                });
-
-            modelBuilder.Entity("estuary_backend.Models.WorkshopTag", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("WorkshopId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TagId");
-
-                    b.HasIndex("WorkshopId");
-
-                    b.ToTable("WorkshopTag");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("facd3370-3cee-4af7-94a1-5f16a4769e64"),
-                            TagId = new Guid("95a53535-2633-41a5-802b-7ad57efcc0ef"),
-                            WorkshopId = new Guid("17bb47aa-c617-40c7-b88d-a3fed6bdc03e")
-                        });
                 });
 
             modelBuilder.Entity("estuary_backend.Models.PropblemStatement", b =>
@@ -207,19 +175,21 @@ namespace estuary_backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasDiscriminator().HasValue("PropblemStatement");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("2cad981e-1de5-4d73-8b3c-b39de97bfe99"),
-                            Title = "ProblemStatement 1",
-                            WorkshopId = new Guid("17bb47aa-c617-40c7-b88d-a3fed6bdc03e"),
-                            Because = "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
-                            But = "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat",
-                            Feel = "Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing.",
-                            Iam = "Lorem ipsum",
-                            Iwant = "dolor sit amet, consetetur sadipscing elitr"
-                        });
+            modelBuilder.Entity("TagWorkshop", b =>
+                {
+                    b.HasOne("estuary_backend.Models.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("estuary_backend.Models.Workshop", null)
+                        .WithMany()
+                        .HasForeignKey("WorkshopsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("estuary_backend.Models.Author", b =>
@@ -233,9 +203,7 @@ namespace estuary_backend.Migrations
                 {
                     b.HasOne("estuary_backend.Models.Workshop", "Workshop")
                         .WithMany("Content")
-                        .HasForeignKey("WorkshopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WorkshopId");
 
                     b.Navigation("Workshop");
                 });
@@ -256,32 +224,6 @@ namespace estuary_backend.Migrations
                         .HasForeignKey("ContentId");
                 });
 
-            modelBuilder.Entity("estuary_backend.Models.Tag", b =>
-                {
-                    b.HasOne("estuary_backend.Models.Workshop", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("WorkshopId");
-                });
-
-            modelBuilder.Entity("estuary_backend.Models.WorkshopTag", b =>
-                {
-                    b.HasOne("estuary_backend.Models.Tag", "Tag")
-                        .WithMany("WorkshopTags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("estuary_backend.Models.Workshop", "Workshop")
-                        .WithMany()
-                        .HasForeignKey("WorkshopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tag");
-
-                    b.Navigation("Workshop");
-                });
-
             modelBuilder.Entity("estuary_backend.Models.Content", b =>
                 {
                     b.Navigation("Likes");
@@ -289,18 +231,11 @@ namespace estuary_backend.Migrations
                     b.Navigation("RelatedContent");
                 });
 
-            modelBuilder.Entity("estuary_backend.Models.Tag", b =>
-                {
-                    b.Navigation("WorkshopTags");
-                });
-
             modelBuilder.Entity("estuary_backend.Models.Workshop", b =>
                 {
                     b.Navigation("Authors");
 
                     b.Navigation("Content");
-
-                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }
