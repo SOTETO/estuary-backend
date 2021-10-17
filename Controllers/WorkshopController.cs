@@ -72,9 +72,9 @@ namespace estuary_backend.Controllers
 
         // DELETE api/<WorkshopController>/5
         [HttpDelete("{id}")]
-        public string Delete(int id)
+        public void Delete(int id)
         {
-            return $"Delete: {id}";
+            workshopService.DeleteWorkshop(id);
         }
 
         #region for testing only

@@ -9,6 +9,8 @@ namespace estuary_backend.Services
         Workshop GetWorkshopById(int id);
 
         int CreateWorkshop(Workshop workshop);
+
+        void DeleteWorkshop(int id);
     }
 
     public class WorkshopService : IWorkshopService
@@ -33,6 +35,17 @@ namespace estuary_backend.Services
                 .FirstOrDefault();
 
             return workshops;
+        }
+
+        public void DeleteWorkshop(int id)
+        {
+            using var ctx = new EstuaryDbContext();
+            var workshop = GetWorkshopById(id);
+            if (workshop is not null)
+            {
+                ctx.Remove(workshop);
+                ctx.SaveChanges();
+            }
         }
     }
 }
