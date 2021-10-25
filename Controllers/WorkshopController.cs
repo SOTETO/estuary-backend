@@ -2,6 +2,7 @@
 using estuary_backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace estuary_backend.Controllers
     public class WorkshopController : ControllerBase
     {
         private readonly IWorkshopService workshopService;
+        private readonly ILogger<WorkshopController> logger;
 
-        public WorkshopController(IWorkshopService workshopService)
+        public WorkshopController(IWorkshopService workshopService, ILogger<WorkshopController> logger)
         {
             this.workshopService = workshopService;
+            this.logger = logger;
         }
 
         // GET: api/<WorkshopController>
@@ -31,6 +34,7 @@ namespace estuary_backend.Controllers
                 .Include(ws => ws.Authors)
                 .ToList();
 
+            this.logger.LogInformation($"Get all {workshops.Count} workshops");
             return workshops;
         }
 
@@ -52,7 +56,7 @@ namespace estuary_backend.Controllers
                 .Include(ws => ws.Content)
                 .Include(ws => ws.Authors)
                 .ToList();
-
+            this.logger.LogInformation($"Get all workshops with tag {tag}, found {workshops.Count} workshops");
             return workshops;
         }
 
@@ -60,7 +64,9 @@ namespace estuary_backend.Controllers
         [HttpPost]
         public int Post([FromBody] Workshop value)
         {
-            return workshopService.CreateWorkshop(value);
+            int newWorkshopId = workshopService.CreateWorkshop(value);
+            this.logger.LogInformation($"Add new workshop with Id {newWorkshopId}");
+            return newWorkshopId;
         }
 
         // PUT api/<WorkshopController>/5
@@ -69,8 +75,10 @@ namespace estuary_backend.Controllers
         {
             if (!workshopService.UpdateWorkshop(value))
             {
+                this.logger.LogInformation($"Update Workshop: Workshop with Id {value.Id} not found.");
                 return NotFound();
             }
+            this.logger.LogInformation($"Update Workshop: Workshop with Id {value.Id} updated.");
             return Ok();
         }
 
@@ -80,8 +88,10 @@ namespace estuary_backend.Controllers
         {
             if (!workshopService.DeleteWorkshop(id))
             {
+                this.logger.LogInformation($"Delete Workshop: Workshop with Id {id} not found.");
                 return NotFound();
             }
+            this.logger.LogInformation($"Delete Workshop: Workshop with Id {id} deleted.");
             return Ok();
         }
 
