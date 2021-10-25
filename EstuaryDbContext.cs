@@ -16,46 +16,19 @@ namespace estuary_backend
 
         public DbSet<Workshop> Workshops { get; set; }
 
-        public DbSet<PropblemStatement> PropblemStatements { get; set; }
+        public DbSet<Content> Contents { get; set; }
 
         public DbSet<Tag> Tags { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PropblemStatement>();
+        }
 /*  
         protected override async void OnModelCreating(ModelBuilder modelBuilder)
         {
           
             #region seed test data
-
-            var tag1 = new Tag { Name = "Improvements", Id = 1 };
-            var tag2 = new Tag { Name = "Tag2", Id = 2 };
-
-
-
-            var workshop1 = new Workshop
-            {
-                Id = 1,
-                Date = DateTime.Now,
-                Authors = new List<Author> { },
-                Teaser = "Lorem ipsum dolor sit amet.",
-                LocationName = "Hamburg", 
-                LocationMap = "https://goo.gl/maps/mbnen1jr8C81J6vU9",
-                Tags = new List<Tag> { tag1, tag2 }
-            };
-
-            var workshop2 = new Workshop
-            {
-                Id = 2,
-                Date = DateTime.Now,
-                Authors = new List<Author> { },
-                Teaser = "Lorem ipsum dolor sit amet.",
-                LocationName = "Berlin",
-                LocationMap = "https://goo.gl/maps/mbnen1jr6C21J6vU9",
-                Tags = new List<Tag> { tag1 }
-            };
-
-
-            modelBuilder.Entity<Workshop>().HasData(workshop1, workshop2, tag1, tag2);
-
-
 
             /*
 

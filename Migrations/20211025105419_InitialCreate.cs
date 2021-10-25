@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace estuary_backend.Migrations
 {
-    public partial class Init : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,7 +58,7 @@ namespace estuary_backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Content",
+                name: "Contents",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -74,9 +74,9 @@ namespace estuary_backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Content", x => x.Id);
+                    table.PrimaryKey("PK_Contents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Content_Workshops_WorkshopId",
+                        name: "FK_Contents_Workshops_WorkshopId",
                         column: x => x.WorkshopId,
                         principalTable: "Workshops",
                         principalColumn: "Id",
@@ -120,9 +120,9 @@ namespace estuary_backend.Migrations
                 {
                     table.PrimaryKey("PK_ContentLink", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ContentLink_Content_ContentId",
+                        name: "FK_ContentLink_Contents_ContentId",
                         column: x => x.ContentId,
-                        principalTable: "Content",
+                        principalTable: "Contents",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -140,9 +140,9 @@ namespace estuary_backend.Migrations
                 {
                     table.PrimaryKey("PK_Like", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Like_Content_ContentId",
+                        name: "FK_Like_Contents_ContentId",
                         column: x => x.ContentId,
-                        principalTable: "Content",
+                        principalTable: "Contents",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -153,14 +153,14 @@ namespace estuary_backend.Migrations
                 column: "WorkshopId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Content_WorkshopId",
-                table: "Content",
-                column: "WorkshopId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ContentLink_ContentId",
                 table: "ContentLink",
                 column: "ContentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contents_WorkshopId",
+                table: "Contents",
+                column: "WorkshopId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Like_ContentId",
@@ -188,7 +188,7 @@ namespace estuary_backend.Migrations
                 name: "TagWorkshop");
 
             migrationBuilder.DropTable(
-                name: "Content");
+                name: "Contents");
 
             migrationBuilder.DropTable(
                 name: "Tags");

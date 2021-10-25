@@ -15,8 +15,6 @@ namespace estuary_backend.Models
         [JsonIgnore]
         public Workshop Workshop { get; set; }
 
-        //public Guid WorkshopId {  get; set; }
-
         public List<ContentLink> RelatedContent { get; set; }
 
         public List<Like> Likes { get; set; }

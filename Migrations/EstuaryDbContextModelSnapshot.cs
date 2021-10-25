@@ -73,7 +73,7 @@ namespace estuary_backend.Migrations
 
                     b.HasIndex("WorkshopId");
 
-                    b.ToTable("Content");
+                    b.ToTable("Contents");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Content");
                 });

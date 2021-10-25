@@ -9,8 +9,8 @@ using estuary_backend;
 namespace estuary_backend.Migrations
 {
     [DbContext(typeof(EstuaryDbContext))]
-    [Migration("20211017134339_Init")]
-    partial class Init
+    [Migration("20211025105419_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,7 +75,7 @@ namespace estuary_backend.Migrations
 
                     b.HasIndex("WorkshopId");
 
-                    b.ToTable("Content");
+                    b.ToTable("Contents");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Content");
                 });

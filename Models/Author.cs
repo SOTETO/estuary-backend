@@ -2,6 +2,7 @@
 
 namespace estuary_backend.Models
 {
+    //TODO: after integrating with drops
     public class Author
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
