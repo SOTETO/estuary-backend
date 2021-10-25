@@ -13,6 +13,8 @@ namespace estuary_backend.Services
         bool DeleteWorkshop(int id);
 
         bool UpdateWorkshop(Workshop workshop);
+
+        bool WorkshopExists(int id);
     }
 
     public class WorkshopService : IWorkshopService
@@ -64,7 +66,18 @@ namespace estuary_backend.Services
                 return true;
             }
             return false;
+        }
 
+        public bool WorkshopExists(int id)
+        {
+            using var ctx = new EstuaryDbContext();
+            var workshops = ctx.Workshops
+                .Where(ws => ws.Id == id)
+                .Include(ws => ws.Tags)
+                .Include(ws => ws.Content)
+                .Include(ws => ws.Authors);
+
+            return workshops.Any();
         }
     }
 }
