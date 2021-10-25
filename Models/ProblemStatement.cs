@@ -1,6 +1,6 @@
 ﻿namespace estuary_backend.Models
 {
-    public class PropblemStatement : Content
+    public class ProblemStatement : Content
     {
         public string Iam { get; set; }
 

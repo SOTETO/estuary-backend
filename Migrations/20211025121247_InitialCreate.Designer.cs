@@ -9,7 +9,7 @@ using estuary_backend;
 namespace estuary_backend.Migrations
 {
     [DbContext(typeof(EstuaryDbContext))]
-    [Migration("20211025105419_InitialCreate")]
+    [Migration("20211025121247_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,7 +155,7 @@ namespace estuary_backend.Migrations
                     b.ToTable("Workshops");
                 });
 
-            modelBuilder.Entity("estuary_backend.Models.PropblemStatement", b =>
+            modelBuilder.Entity("estuary_backend.Models.ProblemStatement", b =>
                 {
                     b.HasBaseType("estuary_backend.Models.Content");
 
@@ -174,7 +174,7 @@ namespace estuary_backend.Migrations
                     b.Property<string>("Iwant")
                         .HasColumnType("TEXT");
 
-                    b.HasDiscriminator().HasValue("PropblemStatement");
+                    b.HasDiscriminator().HasValue("ProblemStatement");
                 });
 
             modelBuilder.Entity("TagWorkshop", b =>

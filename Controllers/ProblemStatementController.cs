@@ -14,21 +14,31 @@ namespace estuary_backend.Controllers
     {
         private readonly ILogger<ProblemStatementController> logger;
         private readonly IWorkshopService workshopService;
+        private readonly IProblemStatementService problemStatementService;
 
-        public ProblemStatementController(ILogger<ProblemStatementController> logger, IWorkshopService workshopService)
+        public ProblemStatementController(ILogger<ProblemStatementController> logger, IWorkshopService workshopService, IProblemStatementService problemStatementService)
         {
             this.logger = logger;
             this.workshopService = workshopService;
+            this.problemStatementService = problemStatementService;
         }
-        // GET: api/<ProblemStatementController>
+
+        [HttpGet("{problemStatementId}")]
+        public ProblemStatement Get(int problemStatementId)
+        {
+            return problemStatementService.GetProblemStatementById(problemStatementId);
+        }
+        
+
+        // POST: api/<ProblemStatementController>
         [HttpPost]
-        public IEnumerable<PropblemStatement> Post([FromBody] int workshopId)
+        public IEnumerable<ProblemStatement> Post([FromBody] int workshopId)
         {
             using var ctx = new EstuaryDbContext();
             var propblemStatements = ctx.Contents
                 .Where(content => content.Workshop.Id == workshopId)
-                .Where(content => content is PropblemStatement)
-                .Select(content => content as PropblemStatement)
+                .Where(content => content is ProblemStatement)
+                .Select(content => content as ProblemStatement)
                 .ToList();
 
             this.logger.LogInformation($"Get all Problemstatements ({propblemStatements.Count}) for workshop with id '{workshopId}'");
@@ -37,7 +47,7 @@ namespace estuary_backend.Controllers
         }
 
         [HttpPost("{workshopId}")]
-        public IActionResult AddProblemStatement(int workshopId, [FromBody] PropblemStatement propblemStatement)
+        public IActionResult AddProblemStatement(int workshopId, [FromBody] ProblemStatement propblemStatement)
         {
             if (!workshopService.WorkshopExists(workshopId))
             {
@@ -59,6 +69,18 @@ namespace estuary_backend.Controllers
             ctx.SaveChanges();
 
             this.logger.LogInformation($"Added new Problem Statement '{propblemStatement.Id}' to Workshop '{workshopId}'");
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            if (!problemStatementService.DeleteProblemStatement(id))
+            {
+                this.logger.LogInformation($"Delete ProblemStatement: ProblemStatement with Id {id} not found.");
+                return NotFound();
+            }
+            this.logger.LogInformation($"Delete ProblemStatement: ProblemStatement with Id {id} deleted.");
             return Ok();
         }
 

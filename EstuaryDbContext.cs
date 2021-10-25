@@ -22,7 +22,7 @@ namespace estuary_backend
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PropblemStatement>();
+            modelBuilder.Entity<ProblemStatement>();
         }
 /*  
         protected override async void OnModelCreating(ModelBuilder modelBuilder)

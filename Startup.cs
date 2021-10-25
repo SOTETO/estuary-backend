@@ -30,6 +30,7 @@ namespace estuary_backend
 
             services.AddControllers();
             services.AddTransient<IWorkshopService, WorkshopService>();
+            services.AddTransient<IProblemStatementService, ProblemStatementService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "estuary_backend", Version = "v1" });
