@@ -1,4 +1,5 @@
-﻿using System;
+﻿using estuary_backend.DTOs;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace estuary_backend.Models
@@ -11,5 +12,14 @@ namespace estuary_backend.Models
         public Content Content { get; set; }
 
         public string LinkTag { get; set; }
+
+        public ContentLinkDTO toDTO()
+        {
+            return new ContentLinkDTO
+            {
+                id = Content.Id,
+                tag = LinkTag,
+            };
+        }
     }
 }

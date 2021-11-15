@@ -8,9 +8,9 @@ namespace estuary_backend.DTOs
 
         public int type { get; set; }
 
-        public string LocationName { get; set; }
+        public string locationName { get; set; }
 
-        public string LocationMap { get; set; }
+        public string locationMap { get; set; }
 
         public DateTime date { get; set; }
 

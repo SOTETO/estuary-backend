@@ -6,6 +6,6 @@
 
         public int status { get; set; }
 
-        public WorkshopContentDTO content { get; set; }
+        public WorkshopContentDTO[] content { get; set; }
     }
 }

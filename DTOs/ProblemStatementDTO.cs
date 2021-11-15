@@ -1,6 +1,6 @@
 ﻿namespace estuary_backend.DTOs
 {
-    public class ProblemStatementDTO
+    public class ProblemStatementDTO : WorkshopContentDTO
     {
         public int id { get; set; }
 
@@ -16,6 +16,6 @@
 
         public string feel { get; set; }
 
-        public ProblemStatementLinkDTO[] linked { get; set; }
+        public ContentLinkDTO[] linked { get; set; }
     }
 }

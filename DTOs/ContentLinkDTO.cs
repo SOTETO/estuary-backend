@@ -1,6 +1,6 @@
 ﻿namespace estuary_backend.DTOs
 {
-    public class ProblemStatementLinkDTO
+    public class ContentLinkDTO
     {
         public int id { get; set; }
 
